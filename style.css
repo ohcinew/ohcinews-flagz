@@ -1,0 +1,152 @@
+/* ===============================
+   Radqueer Flags — Shared Styles
+   Works for both full and lite pages
+   =============================== */
+
+:root{
+  --bg:#0b0b0f;
+  --card:#111118;
+  --ink:#e8e8f0;
+  --muted:#a9adc4;
+  --accent:#88afff;
+  --ring:rgba(57,71,255,.35);
+  --chip:#222235;
+  --chip-active:#2d2d50;
+  --border:rgba(255,255,255,.12);
+  --shadow:0 6px 24px -12px rgba(0,0,0,.55);
+}
+
+.light{
+  --bg:#f7f7fb;
+  --card:#ffffff;
+  --ink:#11121a;
+  --muted:#5b6076;
+  --accent:#2b5cff;
+  --ring:rgba(43,92,255,.25);
+  --chip:#ecefff;
+  --chip-active:#dfe6ff;
+  --border:rgba(0,0,0,.12);
+  --shadow:0 10px 30px -18px rgba(0,0,0,.18);
+}
+
+/* Base */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Layout helpers */
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+
+/* Header */
+header{
+  position:sticky;top:0;z-index:10;
+  background:linear-gradient(180deg,var(--bg),transparent);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:saturate(1.05) blur(6px);
+}
+h1{font-size:20px;margin:0;font-weight:800;letter-spacing:.2px}
+
+/* Pills / chips / inputs */
+.pill{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--chip);color:var(--ink);
+  border:1px solid var(--border);
+  padding:8px 10px;border-radius:999px
+}
+.pill input{all:unset}
+.pill svg{opacity:.9}
+
+.input{
+  display:flex;align-items:center;gap:8px;flex:1;min-width:220px;
+  background:var(--card);border:1px solid var(--border);
+  padding:10px 12px;border-radius:12px
+}
+.input input{all:unset;flex:1}
+
+.btn{
+  cursor:pointer;border:none;background:var(--accent);
+  color:#fff;font-weight:700;padding:10px 14px;border-radius:10px
+}
+.btn.ghost{
+  background:transparent;color:var(--ink);
+  border:1px solid var(--border)
+}
+
+/* Grid & Cards (full gallery) */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:14px;padding:22px
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;
+  box-shadow:var(--shadow)
+}
+.flag{
+  aspect-ratio:16/10;
+  display:grid;place-items:center;background:#0f0f15
+}
+.flag img{width:100%;height:100%;object-fit:cover;display:block}
+.flag svg{width:100%;height:100%;display:block}
+.card .body{padding:12px 14px}
+.name{font-weight:800}
+.meta{
+  color:var(--muted);font-size:12px;margin-top:6px;
+  display:flex;flex-wrap:wrap;gap:6px
+}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{
+  background:var(--chip);
+  padding:4px 8px;border-radius:999px;
+  border:1px solid var(--border)
+}
+
+/* Filters row */
+.filters{display:flex;gap:8px;flex-wrap:wrap;padding:0 22px 10px}
+.filters button{
+  background:var(--chip);
+  border:1px solid var(--border);
+  color:var(--ink);border-radius:999px;
+  padding:6px 10px;cursor:pointer
+}
+.filters button.active{background:var(--chip-active)}
+
+/* Footer note */
+.footer{opacity:.75;font-size:12px;margin-top:20px}
+.kbd{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  padding:.2em .4em;border:1px solid var(--border);
+  border-bottom-width:2px;border-radius:6px
+}
+
+/* Lite page extras (figure cards) */
+figure{
+  margin:0;background:var(--card);border-radius:12px;overflow:hidden;
+  border:1px solid var(--border);box-shadow:var(--shadow)
+}
+figure img{display:block;width:100%;height:150px;object-fit:cover;background:#0f0f15}
+figcaption{padding:10px;font-weight:700;font-size:14px}
+
+/* Focus visibility */
+:focus-visible{
+  outline:3px solid var(--ring);
+  outline-offset:2px;border-radius:8px
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  *{scroll-behavior:auto!important}
+  header{backdrop-filter:none}
+}
