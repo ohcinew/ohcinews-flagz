@@ -1,0 +1,313 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Radqueer Flags Gallery</title>
+  <meta name="description" content="A simple, fast gallery to host and browse radqueer flags on GitHub Pages." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0b0f;
+      --card:#111118;
+      --ink:#e8e8f0;
+      --muted:#a9adc4;
+      --accent:#88afff;
+      --ring:#3947ff55;
+      --chip:#222235;
+      --chip-active:#2d2d50;
+    }
+    .light{
+      --bg:#f7f7fb;
+      --card:#ffffff;
+      --ink:#11121a;
+      --muted:#5b6076;
+      --accent:#2b5cff;
+      --ring:#2b5cff33;
+      --chip:#ecefff;
+      --chip-active:#dfe6ff;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    header{
+      position:sticky;top:0;z-index:10;background:linear-gradient(180deg,var(--bg),color-mix(in oklab,var(--bg),transparent 35%));
+      border-bottom:1px solid color-mix(in oklab,var(--ink),transparent 90%);
+      backdrop-filter:saturate(1.1) blur(6px);
+    }
+    .wrap{max-width:1100px;margin:0 auto;padding:16px}
+    .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    h1{font-size:20px;margin:0;font-weight:800;letter-spacing:0.2px}
+    .pill{display:inline-flex;align-items:center;gap:8px;background:var(--chip);color:var(--ink);border:1px solid color-mix(in oklab,var(--ink),transparent 85%);padding:8px 10px;border-radius:999px}
+    .pill input{all:unset}
+    .pill svg{opacity:.9}
+    .input{display:flex;align-items:center;gap:8px;flex:1;min-width:220px;background:var(--card);border:1px solid color-mix(in oklab,var(--ink),transparent 85%);padding:10px 12px;border-radius:12px}
+    .input input{all:unset;flex:1}
+    .btn{cursor:pointer;border:none;background:var(--accent);color:white;font-weight:700;padding:10px 14px;border-radius:10px}
+    .ghost{background:transparent;color:var(--ink);border:1px solid color-mix(in oklab,var(--ink),transparent 80%)}
+    .grid{display:grid;grid-template-columns:repeat( auto-fill, minmax(220px,1fr));gap:14px;padding:22px}
+    .card{background:var(--card);border:1px solid color-mix(in oklab,var(--ink),transparent 88%);border-radius:16px;overflow:hidden;box-shadow:0 6px 24px -12px color-mix(in oklab,var(--ink),transparent 70%)}
+    .flag{aspect-ratio:16/10;display:grid;place-items:center;background:#0f0f15}
+    .flag img{width:100%;height:100%;object-fit:cover}
+    .flag svg{width:100%;height:100%;display:block}
+    .card .body{padding:12px 14px}
+    .name{font-weight:800}
+    .meta{color:var(--muted);font-size:12px;margin-top:6px;display:flex;flex-wrap:wrap;gap:6px}
+    .chip{background:var(--chip);padding:4px 8px;border-radius:999px;border:1px solid color-mix(in oklab,var(--ink),transparent 85%)}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;padding:0 22px 10px}
+    .filters button{background:var(--chip);border:1px solid color-mix(in oklab,var(--ink),transparent 85%);color:var(--ink);border-radius:999px;padding:6px 10px;cursor:pointer}
+    .filters button.active{background:var(--chip-active)}
+    .footer{opacity:.7;font-size:12px;margin-top:20px}
+    .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;padding:.2em .4em;border:1px solid color-mix(in oklab,var(--ink),transparent 80%);border-bottom-width:2px;border-radius:6px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="row" style="justify-content:space-between;gap:10px">
+        <div class="row" style="gap:10px">
+          <h1>Radqueer Flags</h1>
+          <span class="pill" title="Toggle theme">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 1 1-9.45-9.45 1 1 0 0 0-.14-2A10 10 0 1 0 23 13.36a1 1 0 0 0-1.36-.36Z"/></svg>
+            <label class="row" style="gap:6px;cursor:pointer"><input id="themeToggle" type="checkbox" aria-label="Toggle light theme"><span>Light</span></label>
+          </span>
+        </div>
+        <label class="input" aria-label="Search flags">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 21 15.8 15.8m1.7-4.9a6.6 6.6 0 1 1-13.2 0 6.6 6.6 0 0 1 13.2 0Z"/></svg>
+          <input id="q" placeholder="Search name, tags, colors... (/)" />
+          <button id="clear" class="btn ghost" type="button" aria-label="Clear search" title="Clear">Clear</button>
+        </label>
+      </div>
+    </div>
+    <div class="filters" id="filters"></div>
+  </header>  <main class="wrap">
+    <div id="grid" class="grid" role="list" aria-label="Flags grid"></div>
+    <p class="footer">Tip: Press <span class="kbd">/</span> to jump to search. Add new flags by editing the embedded data below or by switching to a <code>flags.json</code> file later.</p>
+  </main>  <script>
+    // --- Data model ---------------------------------------------------------
+    // You can keep the data inline (easy) or move it to flags.json later.
+    // Each item supports either { imageUrl } or an inline { svg } string.
+    const FLAGS = [
+      {
+        name: "Example Flag — Inline SVG",
+        tags: ["example","demo"],
+        colors: ["#111111","#ff66cc","#99ccff"],
+        desc: "Replace or remove demo items. Inline SVG renders without external files.",
+        svg: `<svg viewBox='0 0 16 10' xmlns='http://www.w3.org/2000/svg'>
+          <rect width='16' height='10' fill='#111'/>
+          <rect width='16' height='6.6' fill='#ff66cc'/>
+          <rect width='16' height='3.3' fill='#99ccff'/>
+        </svg>`
+      },
+      {
+        name: "Example Flag — Image file",
+        tags: ["example","file"],
+        colors: ["#222","#f0f","#0ff"],
+        desc: "When you add real images, place them in /flags then set imageUrl.",
+        imageUrl: "flags/sample-flag.png"
+      },
+      {
+        name: "Pastel Swish",
+        tags: ["pastel","cute"],
+        colors: ["#ffd1dc","#b5e8ff","#e5d1ff"],
+        svg: `<svg viewBox='0 0 16 10' xmlns='http://www.w3.org/2000/svg'>
+          <defs>
+            <linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>
+              <stop offset='0' stop-color='#ffd1dc'/>
+              <stop offset='0.5' stop-color='#b5e8ff'/>
+              <stop offset='1' stop-color='#e5d1ff'/>
+            </linearGradient>
+          </defs>
+          <rect width='16' height='10' fill='url(#g)'/>
+        </svg>`
+      }
+    ];
+
+    // --- Render helpers ----------------------------------------------------
+    const $ = (sel,el=document)=>el.querySelector(sel);
+    const $$ = (sel,el=document)=>Array.from(el.querySelectorAll(sel));
+
+    const grid = document.getElementById('grid');
+    const filtersEl = document.getElementById('filters');
+    const q = document.getElementById('q');
+    const clearBtn = document.getElementById('clear');
+    const themeToggle = document.getElementById('themeToggle');
+
+    // Build filter chips from tags present in data
+    const allTags = Array.from(new Set(FLAGS.flatMap(f=>f.tags||[]))).sort((a,b)=>a.localeCompare(b));
+    const activeTags = new Set();
+
+    function chip(label){
+      const b = document.createElement('button');
+      b.textContent = label; b.dataset.tag = label;
+      b.addEventListener('click',()=>{
+        if(activeTags.has(label)) activeTags.delete(label); else activeTags.add(label);
+        render();
+      });
+      return b;
+    }
+
+    function renderFilters(){
+      filtersEl.innerHTML = '';
+      if(!allTags.length){ filtersEl.style.display='none'; return; }
+      filtersEl.style.display='flex';
+      const reset = document.createElement('button');
+      reset.textContent = 'All';
+      reset.addEventListener('click',()=>{ activeTags.clear(); render(); });
+      filtersEl.appendChild(reset);
+      allTags.forEach(t=>filtersEl.appendChild(chip(t)));
+    }
+
+    function card(flag){
+      const el = document.createElement('article');
+      el.className = 'card'; el.setAttribute('role','listitem');
+      const media = document.createElement('div'); media.className='flag';
+      if(flag.imageUrl){
+        const img=document.createElement('img'); img.loading='lazy'; img.decoding='async'; img.alt = `${flag.name} flag`;
+        img.src = flag.imageUrl; media.appendChild(img);
+      }else if(flag.svg){
+        media.innerHTML = flag.svg;
+      }
+      const body = document.createElement('div'); body.className='body';
+      const name = document.createElement('div'); name.className='name'; name.textContent = flag.name;
+      const meta = document.createElement('div'); meta.className='meta';
+      const tagWrap = document.createElement('div'); tagWrap.className='chips';
+      (flag.tags||[]).forEach(t=>{ const c=document.createElement('span'); c.className='chip'; c.textContent=t; tagWrap.appendChild(c); });
+      const colors = (flag.colors||[]).slice(0,6).map(c=>`<span class="chip" title="${c}" style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:999px;background:${c};display:inline-block;border:1px solid #0002"></span>${c}</span>`).join('');
+      meta.innerHTML = colors;
+      const p = document.createElement('p'); p.style.margin='8px 0 0'; p.textContent = flag.desc||'';
+      body.append(name, meta, tagWrap, p);
+      el.append(media, body);
+      return el;
+    }
+
+    function matchesQuery(flag, query){
+      if(!query) return true;
+      query = query.toLowerCase();
+      const hay = [flag.name, flag.desc, ...(flag.tags||[]), ...(flag.colors||[])].join(' ').toLowerCase();
+      return hay.includes(query);
+    }
+
+    function matchesTags(flag){
+      if(activeTags.size===0) return true;
+      const t = new Set(flag.tags||[]);
+      for (const tag of activeTags){ if(!t.has(tag)) return false; }
+      return true;
+    }
+
+    function render(){
+      // toggle active style on filters
+      $$('#filters button').forEach(b=>{
+        const t=b.dataset.tag; if(!t) {b.classList.toggle('active', activeTags.size===0);return;}
+        b.classList.toggle('active', activeTags.has(t));
+      });
+      const query = q.value.trim();
+      const items = FLAGS.filter(f=>matchesQuery(f, query) && matchesTags(f));
+      grid.innerHTML = '';
+      if(items.length===0){
+        const empty = document.createElement('div');
+        empty.style.padding='20px'; empty.style.opacity='.8';
+        empty.textContent = 'No flags match your filters yet.';
+        grid.appendChild(empty); return;
+      }
+      const frag = document.createDocumentFragment();
+      items.forEach(f=>frag.appendChild(card(f)));
+      grid.appendChild(frag);
+    }
+
+    // Search UX niceties
+    document.addEventListener('keydown', (e)=>{
+      if(e.key==='/' && e.target.tagName!=='INPUT' && e.target.tagName!=='TEXTAREA'){
+        e.preventDefault(); q.focus(); q.select();
+      }
+    });
+    clearBtn.addEventListener('click',()=>{ q.value=''; render(); q.focus(); });
+    q.addEventListener('input',()=>render());
+
+    // Theme toggle
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    if(prefersLight) document.body.classList.add('light');
+    themeToggle.checked = document.body.classList.contains('light');
+    themeToggle.addEventListener('change',()=>{
+      document.body.classList.toggle('light', themeToggle.checked);
+      localStorage.setItem('rq_theme', themeToggle.checked ? 'light':'dark');
+    });
+    // persist theme
+    const saved = localStorage.getItem('rq_theme');
+    if(saved) document.body.classList.toggle('light', saved==='light');
+    themeToggle.checked = document.body.classList.contains('light');
+
+    renderFilters();
+    render();
+
+    // Optional: switch to external flags.json by uncommenting below and removing FLAGS above.
+    // fetch('flags.json').then(r=>r.json()).then(data=>{ FLAGS.splice(0,FLAGS.length,...data); renderFilters(); render(); });
+  </script></body>
+</html><!-- ========================= LITE VERSION ========================= --><!-- Save this as index-lite.html if the full gallery feels slow/crashy. --><!-- It only shows a simple grid from flags.json (no filters/JS extras). --><!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Radqueer Flags — Lite</title>
+  <style>
+    :root { --bg:#0b0b0f; --ink:#e8e8f0; --card:#141420; }
+    body{margin:0;font-family:system-ui,Segoe UI,Inter,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+    header{padding:16px 20px;background:#0d0d15;position:sticky;top:0}
+    h1{margin:0;font-size:20px}
+    main{max-width:1100px;margin:0 auto;padding:14px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+    figure{margin:0;background:var(--card);border-radius:12px;overflow:hidden;border:1px solid #ffffff14}
+    img{display:block;width:100%;height:150px;object-fit:cover;background:#0f0f15}
+    figcaption{padding:10px;font-weight:700;font-size:14px}
+  </style>
+</head>
+<body>
+  <header><h1>Radqueer Flags — Lite</h1></header>
+  <main>
+    <div id="grid" class="grid"></div>
+  </main>
+  <script>
+    // Minimal loader: expects a flags.json like the example below.
+    fetch('flags.json').then(r=>r.json()).then(list=>{
+      const grid = document.getElementById('grid');
+      grid.innerHTML='';
+      for(const f of list){
+        const fig=document.createElement('figure');
+        const img=new Image();
+        img.loading='lazy'; img.decoding='async';
+        img.src=f.imageUrl; img.alt=f.name||'flag';
+        const cap=document.createElement('figcaption');
+        cap.textContent=f.name||f.imageUrl;
+        fig.append(img,cap); grid.appendChild(fig);
+      }
+    }).catch(()=>{
+      document.getElementById('grid').innerHTML = '<p>Could not load flags.json — add one to the repo root.</p>';
+    });
+  </script>
+</body>
+</html><!-- Example flags.json to pair with the lite version:
+[
+  { "name": "Radqueer Core", "imageUrl": "flags/radqueer-core.png" },
+  { "name": "Xenogender Star", "imageUrl": "flags/xenogender-star.svg" }
+]
+--><!-- ========================= README (quick) ========================= --><!-- Save as README.md in your repo --><!--
+# Radqueer Flags Gallery
+
+Two options:
+
+1) **index.html** – full UI (search, tags, palettes). Edit the `FLAGS` array or switch to `flags.json`.
+2) **index-lite.html** – ultra-simple static grid using `flags.json` only.
+
+## Quick start (Lite)
+- Upload your flag images into `/flags/`.
+- Create `flags.json` (see example above).
+- Set GitHub Pages to serve from the root of `main`. Rename `index-lite.html` -> `index.html` (so Pages serves it).
+
+## Tips
+- Keep images under ~500 KB. Prefer SVG for crisp lines & tiny size.
+- Filenames & paths are case-sensitive.
+- If GitHub’s web editor is slow, use **Add file → Upload files** or push from a client.
+-->
